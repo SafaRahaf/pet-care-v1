@@ -112,7 +112,7 @@ const resetPassword = async (newPassword: string, token: string) => {
 
   const newHashedPassword = await bcryptjs.hash(
     newPassword,
-    Number(config.salt_round)
+    Number(config.salt_round) || 10
   );
 
   user.password = newHashedPassword;
