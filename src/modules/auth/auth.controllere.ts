@@ -29,30 +29,32 @@ const login = catchAsync(async (req, res) => {
   });
 });
 
-const forgetPassword = catchAsync(async (req, res) => {
-  const userId = req.body.id;
-  const result = await authServices.forgotPassword(userId);
+const forgetPassword = catchAsync(async (req, res, next) => {
+  const email = req.body.email;
+  const result = await authServices.forgotPassword(email);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Reset link is generated succesfully!",
+    message: "Reset link is generated successfully! Please check your email.",
     data: result,
   });
 });
 
 const resetPassword = catchAsync(async (req, res) => {
-  const token = req.headers.authorization;
+  const { newPassword } = req.body;
+  const token = req.params.token;
 
   if (!token) {
-    throw new AppError(httpStatus.BAD_REQUEST, "Something went wrong !");
+    throw new AppError(httpStatus.BAD_REQUEST, "Token is required!");
   }
 
-  const result = await authServices.resetPassword(req.body, token);
+  const result = await authServices.resetPassword(newPassword, token);
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Password reset succesfully!",
+    message: "Password reset successfully!",
     data: result,
   });
 });

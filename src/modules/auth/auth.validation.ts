@@ -31,23 +31,19 @@ const createLoginAuthValidation = z.object({
 
 const createForgotPasswordValidation = z.object({
   body: z.object({
-    // email: z.string({
-    //   required_error: "User email is required!",
-    // }),
-    id: z.string({
-      required_error: "User id is required!",
+    email: z.string({
+      required_error: "User email is required!",
     }),
   }),
 });
 
 const createResetPasswordValidation = z.object({
   body: z.object({
-    id: z.string({
-      required_error: "User id is required!",
-    }),
-    newPassword: z.string({
-      required_error: "User password is required!",
-    }),
+    newPassword: z
+      .string({
+        required_error: "New password is required!",
+      })
+      .min(6, "Password should be at least 6 characters long"),
   }),
 });
 
